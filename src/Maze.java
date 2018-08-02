@@ -11,25 +11,21 @@ public class Maze {
      * @param mazeInfo in a 2d char array
      */
     public Maze(char[][] mazeInfo){
-        for(int i = 0; i < mazeInfo.length; i++) {
-            for(int j = 0; j < mazeInfo[i].length; j++) {
-                
-            }
-        }
-    } 
+       this.mazeInfo = mazeInfo;
+    }
     /*
      * sets the start position field
      * @param row, col
      */
     public void setStart(int row, int col){
-        
+        start = new Position(row, col);
     }
     /*
      * sets the finish position field
      * @param row, col
      */
     public void setFinish(int row, int col){
-        
+        finish = new Position(row, col);
     }
     /*
      * Displays the maze. Note that the code for this method is provided in the assignment
@@ -93,4 +89,18 @@ public class Maze {
     public void solveMaze(){
         
     }
+
+
+public static void main(String[] args) {
+      Maze maze = new Maze(new char[][]{ // Create the maze
+                              {'L','.','|'},
+                              {'L','_','_'}
+                             });
+      maze.setStart(0, 0);
+      maze.setFinish(0, 2);
+      maze.displayMaze();
+      maze.solveMaze();
+      maze.displayMaze();
+
+}
 }

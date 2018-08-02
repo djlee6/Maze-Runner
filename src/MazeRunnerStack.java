@@ -1,6 +1,5 @@
 import java.util.EmptyStackException;
 
-
 public class MazeRunnerStack implements StackADT<Position> {
 
 	public Position[] storage = new Position[100];
@@ -45,7 +44,7 @@ public class MazeRunnerStack implements StackADT<Position> {
         }
     }
     public boolean contains(Position p) { //Reports whether the Position p can be found within the stack
-    	for (int i = 0; i < size; i++) {
+    	for (int i = size; i >= 0; i--) {
     		if (p == storage[i]) {
     			return true;
     		}
