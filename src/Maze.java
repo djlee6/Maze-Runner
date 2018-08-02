@@ -93,7 +93,4 @@ public class Maze {
     public void solveMaze(){
         
     }
-    public static void main(String[] args) {
-        
-    }
 }
