@@ -3,9 +3,12 @@ import java.util.EmptyStackException;
 public class MazeRunnerStack implements StackADT<Position> {
     private int size = 0;
     private Position top;
-    private Position[] stackArray = new Position[100];
+    private Position[] stackArray;
     private Position previous;
     
+    public MazeRunnerStack (char[][] mazeInfo){
+    	stackArray = new Position[mazeInfo.length * mazeInfo[0].length * 4];
+    }
     @Override
     public void push(Position item) throws IllegalArgumentException {
         if(item == null) {
@@ -16,14 +19,14 @@ public class MazeRunnerStack implements StackADT<Position> {
             stackArray[0] = top;
             size++;
         }
-        else {
-            size++;
-            top = item;
-            for(int i = 0; i < size; i++) {
-                stackArray[i + 1] = stackArray[i];
-            }
-            stackArray[0] = top;
-        }
+//        else {
+//            size++;
+//            top = item;
+//            for(int i = 0; i < size; i++) {
+//                stackArray[i + 1] = stackArray[i];
+//            }
+//            stackArray[size] = top;
+//        }
     }
 
     @Override
@@ -31,14 +34,20 @@ public class MazeRunnerStack implements StackADT<Position> {
         if(isEmpty()) {
             throw new EmptyStackException();
         }
+//        else {
+//            previous = top;
+//            size--;
+//            for(int i = 0; i < size; i++) {
+//                stackArray[i] = stackArray[i + 1];
+//            }
+//            top = stackArray[size];
+//            return previous;
+//        }
         else {
-            previous = top;
-            size--;
-            for(int i = 0; i < size; i++) {
-                stackArray[i] = stackArray[i + 1];
-            }
-            top = stackArray[0];
-            return previous;
+        	top = previous;
+        	size--;
+        	previous = stackArray[size - 1];
+        	return top;
         }
     }
 
