@@ -1,3 +1,4 @@
+import java.util.EmptyStackException;
 
 public class Maze {
     private Position start; // Start position
@@ -11,13 +12,40 @@ public class Maze {
      * @param mazeInfo in a 2d char array
      */
     public Maze(char[][] mazeInfo){
-       this.mazeInfo = mazeInfo;
-    }
+        this.mazeInfo = mazeInfo;
+        try {
+            for(int i = 0; i < mazeInfo.length; i++) {
+                for(int j = 0; j < mazeInfo[i].length; j++) {
+                    if(((mazeInfo[i][j] == 'L' || mazeInfo[i][j] == '|') && 
+                        (mazeInfo[i + 1][j] != 'L' || mazeInfo[i + 1][j] != 'l')) && j == 0) {
+                            path.push(new Position(i + 1, j));
+                    }
+                    if((mazeInfo[i][j] == 'L' || mazeInfo[i][j] == 'l' || mazeInfo[i][j] == '.')
+                        ) {
+                    
+                    }
+                    if(mazeInfo[i][j] == '.' && mazeInfo[i + 1][j] != 'l') {
+                        path.push(new Position(i, j + 1));
+                    }
+                    if(mazeInfo[i][j] == 'L' && (mazeInfo[i][j - 1] == 'L' || mazeInfo[i][j - 1] == '_')) {
+                        path.pop();
+                    }
+                }
+            }
+        }
+        catch (EmptyStackException e) {
+            System.out.print(e.getMessage());            
+        }
+        catch (IllegalArgumentException e) {
+            System.out.print(e.getMessage());
+        }
+    } 
     /*
      * sets the start position field
      * @param row, col
      */
     public void setStart(int row, int col){
+        mazeInfo[row][col] = 'S';
         start = new Position(row, col);
     }
     /*
@@ -25,6 +53,7 @@ public class Maze {
      * @param row, col
      */
     public void setFinish(int row, int col){
+        mazeInfo[row][col] = 'F';
         finish = new Position(row, col);
     }
     /*
