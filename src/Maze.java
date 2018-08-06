@@ -12,40 +12,116 @@ public class Maze {
      * @param mazeInfo in a 2d char array
      */
     public Maze(char[][] mazeInfo){
-        this.mazeInfo = mazeInfo;
-        try {
-            for(int i = 0; i < mazeInfo.length; i++) {
-                for(int j = 0; j < mazeInfo[i].length; j++) {
-                    if(((mazeInfo[i][j] == 'L' || mazeInfo[i][j] == '|') && 
-                        (mazeInfo[i + 1][j] != 'L' || mazeInfo[i + 1][j] != 'l')) && j == 0) {
-                            path.push(new Position(i + 1, j));
-                    }
-                    if((mazeInfo[i][j] == 'L' || mazeInfo[i][j] == 'l' || mazeInfo[i][j] == '.')
-                        ) {
-                    
-                    }
-                    if(mazeInfo[i][j] == '.' && mazeInfo[i + 1][j] != 'l') {
-                        path.push(new Position(i, j + 1));
-                    }
-                    if(mazeInfo[i][j] == 'L' && (mazeInfo[i][j - 1] == 'L' || mazeInfo[i][j - 1] == '_')) {
-                        path.pop();
-                    }
-                }
-            }
-        }
-        catch (EmptyStackException e) {
-            System.out.print(e.getMessage());            
-        }
-        catch (IllegalArgumentException e) {
-            System.out.print(e.getMessage());
-        }
-    } 
+    
+    	String facing = "East";
+    	this.mazeInfo = mazeInfo;
+    	
+    	if(start != null) {
+        	path = new MazeRunnerStack();
+        	path.push(this.start);
+        	}
+ 
+    	try {
+    		while(path != null && path.peek() != finish) {
+    			
+    			while(facing == "East") {//I am facing East
+   
+    				if(path.peek().row + 1 <=  mazeInfo.length && //in Bounds
+    					mazeInfo[path.peek().row][path.peek().col] == '.' || 
+    				   mazeInfo[path.peek().row][path.peek().col] == 'l' ) {//I should move right
+    					
+    						path.push(new Position((path.peek().row + 1), path.peek().col));//Increase row
+    						facing = "South";//Start checking South
+    					
+    				}
+    				else if(path.peek().col + 1 <=  mazeInfo[0].length && //in Bounds
+    						mazeInfo[path.peek().row][path.peek().col + 1] != 'L' || 
+    				        mazeInfo[path.peek().row][path.peek().col + 1] != 'l') {//I should move forward
+   
+    						path.push(new Position((path.peek().row), path.peek().col + 1));//Increase column
+    				}
+    				else  {//I can't move forward or right
+    					
+    					facing = "North";//Start checking North
+    				}
+    			}
+    			
+    			while(facing == "South") {//I am facing South
+    				if(path.peek().col - 1 >= 0 && //in Bounds
+    						mazeInfo[path.peek().row][path.peek().col] == '.' || 
+    	    				   mazeInfo[path.peek().row][path.peek().col] == '_') {//I should move right
+    	    					
+    	    						path.push(new Position((path.peek().row), path.peek().col - 1));//Decrease column
+    	    						facing = "West";//Start checking West
+    	    					
+    	    				}
+    	    				else if(path.peek().row + 1 <=  mazeInfo.length && //in bounds
+    	    						mazeInfo[path.peek().row][path.peek().col] == '.' || 
+    	    				        mazeInfo[path.peek().row][path.peek().col] == 'l' ) {//I should move forward
+    	    					
+    	    						path.push(new Position((path.peek().row + 1), path.peek().col));//Increase row
+    	    				}
+    	    				else  {//I can't move forward or right
+    	    					
+    	    					facing = "East";//Start checking East
+    	    				}
+    			}
+    			while(facing == "West") {//I am facing West
+    				if(path.peek().row - 1 >= 0 && //in Bounds
+    						mazeInfo[path.peek().row - 1][path.peek().col] == 'L' || 
+ 	    				   mazeInfo[path.peek().row - 1][path.peek().col] == '_') {//I should move right
+ 	    					
+ 	    						path.push(new Position((path.peek().row - 1), path.peek().col));//Decrease row
+ 	    						facing = "North";//Start checking North
+ 	    					
+ 	    				}
+ 	    				else if(path.peek().col - 1 >= 0 && //in Bounds
+ 	    						mazeInfo[path.peek().row][path.peek().col] == '.' || 
+ 	    				        mazeInfo[path.peek().row][path.peek().col] == '_') {//I should move forward
+ 	    					
+ 	    						path.push(new Position((path.peek().row), path.peek().col - 1));//Decrease Column
+ 	    				}
+ 	    				else  {//I can't move forward or right
+ 	    					
+ 	    					facing = "South";//Start checking South
+ 	    				}
+    			}
+    			while(facing == "North") {//I am facing North
+    				if(path.peek().row + 1 <=  mazeInfo.length && //in Bounds
+    						mazeInfo[path.peek().row][path.peek().col + 1] == '.' || 
+  	    				   mazeInfo[path.peek().row][path.peek().col + 1] == '_') {//I should move right
+  	    					
+  	    						path.push(new Position((path.peek().row), path.peek().col + 1));//Increase Column
+  	    						facing = "West";//Start checking West
+  	    					
+  	    				}
+  	    				else if(path.peek().row - 1 >= 0 && //in Bounds
+  	    						mazeInfo[path.peek().row - 1][path.peek().col] == '.' || 
+  	    				        mazeInfo[path.peek().row - 1][path.peek().col] == 'l') {//I should move forward
+  	    					
+  	    						path.push(new Position((path.peek().row - 1), path.peek().col));//Decrease Row
+  	    				}
+  	    				else  {//I can't move forward or right
+  	    					
+  	    					facing = "West";//Start checking West
+  	    				}
+    			}
+    			}
+    	}
+    	
+    		  catch (EmptyStackException e) {
+    	            System.out.print(e.getMessage());            
+    	        }
+    	        catch (IllegalArgumentException e) {
+    	            System.out.print(e.getMessage());
+    	        }
+    	}
+
     /*
      * sets the start position field
      * @param row, col
      */
     public void setStart(int row, int col){
-        mazeInfo[row][col] = 'S';
         start = new Position(row, col);
     }
     /*
@@ -53,7 +129,6 @@ public class Maze {
      * @param row, col
      */
     public void setFinish(int row, int col){
-        mazeInfo[row][col] = 'F';
         finish = new Position(row, col);
     }
     /*
