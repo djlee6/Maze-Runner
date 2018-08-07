@@ -73,9 +73,4 @@ public class MazeRunnerStack implements StackADT<Position> {
         }
         return false;
     }
-    public void printStack() {
-    	for(int i = 0; i < size; i++) {
-    		stackArray[i].printPose();
-    	}
-    }
 }

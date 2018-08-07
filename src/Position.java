@@ -51,7 +51,4 @@ class Position {
     public boolean equals(int row, int col) {
         return this.col == col && this.row == row;
     }
-    public void printPose() {
-    	System.out.println(		"row: " + this.row + "col: " + this.col);
-    }
 }
