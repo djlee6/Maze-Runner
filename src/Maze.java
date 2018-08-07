@@ -96,174 +96,154 @@ public class Maze {
     }
     //Solves the maze
     public void solveMaze(){
-    	path = new MazeRunnerStack(mazeInfo);
+    	path = new MazeRunnerStack();
     	path.push(start);
     	mouse = start;
-    	
 
 	try {
-		while(path != null && path.peek() != finish) {
+		while(path != null && !path.peek().equals(finish)) {
 		
-			while(facing == "East" && path.peek() != finish) {//I am facing East
+			while(facing == "East" && !path.peek().equals(finish)) {//I am facing East
 
-				if(path.peek().row + 1 <=  mazeInfo.length && //in Bounds
-					mazeInfo[path.peek().row][path.peek().col] == '.' || 
-				   mazeInfo[path.peek().row][path.peek().col] == 'l' ) {//I should move right
+				if(path.peek().col + 1 <  mazeInfo[0].length && //in Bounds
+						(mazeInfo[path.peek().row][path.peek().col + 1] == '.' ||
+				        mazeInfo[path.peek().row][path.peek().col + 1] == '_')) {//I should move forward
 					
-					mouse = new Position((path.peek().row + 1),( path.peek().col));
-				
-						facing = "South";//Start checking South
-						System.out.println("Turn South");
-					
-				}
-				else if(path.peek().col + 1 <=  mazeInfo[0].length && //in Bounds
-						mazeInfo[path.peek().row][path.peek().col + 1] != 'L' || 
-				        mazeInfo[path.peek().row][path.peek().col + 1] != 'l') {//I should move forward
-
 					mouse = new Position((path.peek().row),( path.peek().col + 1));
-					//	path.push(new Position((path.peek().row), path.peek().col + 1));//Increase column
+					 
+ 				}
+				else if(path.peek().row + 1 <=  mazeInfo.length && //in Bounds
+					(mazeInfo[path.peek().row][path.peek().col] == '.' || 
+				   mazeInfo[path.peek().row][path.peek().col] == '|' )) {//I should move right
 					
+						facing = "South";//Start checking South	 
+	
 				}
+				
 				else  {//I can't move forward or right
 					
 					facing = "North";//Start checking North
-					System.out.println("Turn North");
 				}
 				if(!path.contains(mouse) && facing == "East") { //The path does not already contain the mouse position
-					System.out.println("Pushed East");
-					mouse.printPose();
 					
 					path.push(mouse);//Add the new position to the path
 					
-					path.peek().printPose();
+					 
 				}
-				else if(path.contains(mouse)) {//If the path includes mouse
-				System.out.println("Popped East");	
-				mouse.printPose();
-			
+				else if(path.contains(mouse) && facing == "East") {//If the path includes mouse
 					path.pop();//Pop it off
-					path.peek().printPose();
+					 
+				
 				}
+				
 			}
 			
-			while(facing == "South" && path.peek() != finish) {//I am facing South
-				if(path.peek().col - 1 >= 0 && //in Bounds
-						mazeInfo[path.peek().row][path.peek().col] == 'l' || 
-	    				   mazeInfo[path.peek().row][path.peek().col] == '_') {//I should move right
-	    					
-					mouse = new Position((path.peek().row),( path.peek().col - 1));
-	    		
-	    						facing = "West";//Start checking West
-	    						System.out.println("Turn West");
-	    					
-	    				}
-	    				else if(path.peek().row + 1 <=  mazeInfo.length && //in bounds
-	    						mazeInfo[path.peek().row][path.peek().col] == '.' || 
-	    				        mazeInfo[path.peek().row][path.peek().col] == 'l' ) {//I should move forward
-	    					
-	    					mouse = new Position((path.peek().row + 1),( path.peek().col));
-	    				//		path.push(new Position((path.peek().row + 1), path.peek().col));//Increase row
-	    				}
+			while(facing == "South" && !path.peek().equals(finish)) {//I am facing South
+				if(path.peek().row + 1 <=  mazeInfo.length && //in bounds
+						mazeInfo[path.peek().row][path.peek().col] == '.' || 
+				        mazeInfo[path.peek().row][path.peek().col] == '|' ) {//I should move forward
+					
+					mouse = new Position((path.peek().row + 1),( path.peek().col));
+					 
+				}
+
+	    		else if(path.peek().col - 1 >= 0 && //in Bounds
+	    				(mazeInfo[path.peek().row][path.peek().col] != '_' || 
+	 	    			mazeInfo[path.peek().row][path.peek().col] != 'L')) {//I should move right
+	 	    	
+	 	    						facing = "West";//Start checking West
+	 	    					
+	 	    				}
 	    				else  {//I can't move forward or right
 	    					
 	    					facing = "East";//Start checking East
-	    					System.out.println("Turn East");
+
 	    				}
 				if(!path.contains(mouse) && facing == "South") { //The path does not already contain the mouse position
-					System.out.println("Pushed South");
-					mouse.printPose();
 					
 					path.push(mouse);//Add the new position to the path
-					path.peek().printPose();
+					 
 				}
-				else if(path.contains(mouse)) {//If the path includes mouse
-				System.out.println("Popped South");	
-				mouse.printPose();
+				else if(path.contains(mouse) && facing == "South") {//If the path includes mouse
 			
 					path.pop();//Pop it off
-					path.peek().printPose();
+					 
 				}
+
 			}
-			while(facing == "West" && path.peek() != finish) {//I am facing West
-				if(path.peek().row - 1 >= 0) { //in Bounds
-					if(	mazeInfo[path.peek().row - 1][path.peek().col] == 'L' || 
-	    				   mazeInfo[path.peek().row - 1][path.peek().col] == '_') {//I should move right
-	    					
-						mouse = new Position((path.peek().row - 1),( path.peek().col));
+			while(facing == "West" && !path.peek().equals(finish)) {//I am facing West
+				if(path.peek().col - 1 >= 0 && //in Bounds
+						(mazeInfo[path.peek().row][path.peek().col] == '.' || 
+				        mazeInfo[path.peek().row][path.peek().col] == '_')) {//I should move forward
+					
+					mouse = new Position((path.peek().row),( path.peek().col - 1));
+
+				}
+				else if(path.peek().row - 1 >= 0 &&  //in Bounds
+					mazeInfo[path.peek().row - 1][path.peek().col] != 'L' && 
+	    				   mazeInfo[path.peek().row - 1][path.peek().col] != '_') {//I should move right
 	    		
 	    						facing = "North";//Start checking North
-	    						System.out.println("Turn North");
-	    					
-	    				}
-				}
-	    				else if(path.peek().col - 1 >= 0 && //in Bounds
-	    						mazeInfo[path.peek().row][path.peek().col] == '.' || 
-	    				        mazeInfo[path.peek().row][path.peek().col] == '_') {//I should move forward
-	    					
-	    					mouse = new Position((path.peek().row),( path.peek().col - 1));
-	    				//		path.push(new Position((path.peek().row), path.peek().col - 1));//Decrease Column
-	    				}
+		
+	    				}				
 	    				else  {//I can't move forward or right
 	    					
 	    					facing = "South";//Start checking South
-	    					System.out.println("Turn South");
+	    					 
 	    				}
 				if(!path.contains(mouse) && facing == "West") { //The path does not already contain the mouse position
-					System.out.println("Pushed Weast");
-					mouse.printPose();
 				
 					path.push(mouse);//Add the new position to the path
-					path.peek().printPose();
+					 
 				}
-				else if(path.contains(mouse)) {//If the path includes mouse
-				System.out.println("Popped Weast");	
-				mouse.printPose();
-		
+				else if(path.contains(mouse) && facing == "West") {//If the path includes mouse
+
 					path.pop();//Pop it off
-					path.peek().printPose();
+					 
+				
 				}
+				 
 			}
-			while(facing == "North" && path.peek() != finish) {//I am facing North
-				if(path.peek().row + 1 <=  mazeInfo.length && //in Bounds
-						mazeInfo[path.peek().row][path.peek().col + 1] == '.' || 
-	    				   mazeInfo[path.peek().row][path.peek().col + 1] == '_') {//I should move right
+			while(facing == "North" && !path.peek().equals(finish)) {//I am facing North
+				if(path.peek().row + 1 <  mazeInfo.length && //in Bounds
+						(mazeInfo[path.peek().row][path.peek().col + 1] == '.' || 
+	    				   mazeInfo[path.peek().row][path.peek().col + 1] == '_')) {//I should move right
 	    					
 					mouse = new Position((path.peek().row),( path.peek().col + 1));
-	    					//	path.push(new Position((path.peek().row), path.peek().col + 1));//Increase Column
-	    						facing = "West";//Start checking West
-	    						System.out.println("Turn West");
+
+	    						facing = "East";//Start checking West
+	    						 
 	    					
 	    				}
 	    				else if(path.peek().row - 1 >= 0 && //in Bounds
-	    						mazeInfo[path.peek().row - 1][path.peek().col] == '.' || 
-	    				        mazeInfo[path.peek().row - 1][path.peek().col] == 'l') {//I should move forward
+	    						(mazeInfo[path.peek().row - 1][path.peek().col] == '.' || 
+	    				        mazeInfo[path.peek().row - 1][path.peek().col] == '|')) {//I should move forward
 	    					
 	    					mouse = new Position((path.peek().row - 1),( path.peek().col));
-	    			//			path.push(new Position((path.peek().row - 1), path.peek().col));//Decrease Row
+	   
 	    				}
 	    				else  {//I can't move forward or right
 	    					
 	    					facing = "West";//Start checking West
-	    					System.out.println("Turn West");
+
 	    				}
 				if(!path.contains(mouse) && facing == "North") { //The path does not already contain the mouse position
-					System.out.println("Pushed North");
-	
-					mouse.printPose();
-				
-					
+
 					path.push(mouse);//Add the new position to the path
-					path.peek().printPose();
+					 
 				}
-				else if(path.contains(mouse)) {//If the path includes mouse
-				System.out.println("Popped North");	
-				mouse.printPose();
+				else if(path.contains(mouse) && facing == "North") {//If the path includes mouse
 			
 					path.pop();//Pop it off
-					path.peek().printPose();
+					 
 				}
 			}
+			 
 			}
+		if(path.peek().equals(finish)) {
+			 
+			solved = true;
+		}
 	}
 	
 		  catch (EmptyStackException e) {
